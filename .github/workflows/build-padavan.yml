@@ -20,7 +20,7 @@ on:
         required: true
 
 jobs:
-  build:
+  ${{ github.event.inputs.tname }}:
     runs-on: ubuntu-18.04
     if: github.event.repository.owner.id == github.event.sender.id
 
