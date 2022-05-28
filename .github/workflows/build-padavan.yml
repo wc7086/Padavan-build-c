@@ -121,6 +121,9 @@ jobs:
         sed -i 's/CONFIG_FIRMWARE_INCLUDE_XRAY=n/CONFIG_FIRMWARE_INCLUDE_XRAY=y/' configs/templates/K2P.config
         fakeroot ./build_firmware_modify $DEVICE_NAME
         mv images/*.trx /opt/bin/${DEVICE_NAME}_xray.trx
+        
+        # sha256sum
+        find /opt/bin -type f -print0 | xargs -0 md256sum > /opt/bin/sha256sums
 
     - name: Check space usage
       if: (!cancelled())
@@ -137,7 +140,7 @@ jobs:
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
-        cd rt-n56u/trunk/images
+        cd /opt/bin
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
 
